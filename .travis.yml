@@ -1,18 +1,11 @@
 os:
   - linux
-  - osx
 
 language: c
 dist: trusty
 
 compiler:
   - gcc
-  - clang
-
-matrix:
-  exclude:
-      - os: osx
-        compiler: gcc
 
 sudo: false
 
