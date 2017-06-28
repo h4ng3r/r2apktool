@@ -72,7 +72,7 @@ def decompileSmali(apk_file, out_path):
 
 	r2.cmd ("e asm.comments = false")
 	r2.cmd ("e asm.slow = false")
-	r2.cmd ("e asm.demangle = false")
+	#r2.cmd ("e asm.demangle = false")
 
 	sizes = parseSymbols (r2.cmdj ("isj"))
 
