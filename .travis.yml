@@ -41,5 +41,6 @@ script:
   - export PATH=${TRAVIS_BUILD_DIR}/radare2/install/bin:${PATH}
   - cd ..
   - pip install r2pipe
+  - radare2 -v
   - chmod +x test.sh
   - ./test.sh
