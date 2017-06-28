@@ -26,7 +26,6 @@ addons:
       - jq
       - gcc-4.8
       - g++-4.8
-      - apktool
 
 cache:
   - ccache

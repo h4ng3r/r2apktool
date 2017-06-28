@@ -64,20 +64,6 @@ def printMethods(F, r2, methods, sizes, direct = True):
 def decompileSmali(apk_file, out_path):
 	os.makedirs (out_path)
 
-	cmd = ["radare2", "-v"]
-	try:
-		process = Popen(cmd, shell=False, stdin=PIPE, stdout=PIPE)
-		r2_version = process.stdout.read()
-	except:
-		print("ERROR: Cannot find radare2 in PATH")
-		sys.exit()
-
-	r2_build_date = r2_version[-21:-11]
-	r2_build_date = datetime.strptime(r2_build_date, '%Y-%m-%d')
-	delta = r2_build_date - datetime.today()
-	if delta.days < -7:
-		print "WARNING: Your version of radare2 is quite old, please consider upgrade it to the last version from git."
-
 	try:
 		r2 = r2pipe.open ("apk://" + apk_file)
 	except Exception as e:
@@ -97,7 +83,9 @@ def decompileSmali(apk_file, out_path):
 		smali_file = out_path+"/"+clazz['classname'][1:]+".smali"
 		with codecs.open (smali_file, mode="w", encoding="UTF-8") as F:
 			F.write (".class %s %s;\n" % ("public", clazz['classname']) )
-			F.write (".super %s\n" % (clazz['super']) )
+			
+			if "super" in clazz:
+				F.write (".super %s\n" % (clazz['super']) )
 
 			F.write ("\n\n# instance fields\n")
 			printFields (F, clazz['fields'], "ifield")
@@ -132,6 +120,21 @@ def main():
 		else:
 			print "The path already exists. You can overwrite it with -f option."
 			sys.exit ()
+
+
+	cmd = ["radare2", "-v"]
+	try:
+		process = Popen(cmd, shell=False, stdin=PIPE, stdout=PIPE)
+		r2_version = process.stdout.read()
+	except:
+		print("ERROR: Cannot find radare2 in PATH")
+		sys.exit()
+
+	r2_build_date = r2_version[-21:-11]
+	r2_build_date = datetime.strptime(r2_build_date, '%Y-%m-%d')
+	delta = r2_build_date - datetime.today()
+	if delta.days < -7:
+		print "WARNING: Your version of radare2 is quite old, please consider upgrade it to the last version from git."
 
 	decompileSmali (apk_file, out_path)
 
