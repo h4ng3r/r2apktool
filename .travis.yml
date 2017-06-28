@@ -38,7 +38,7 @@ script:
   - ./configure --prefix=`pwd`/install > /dev/null
   - make -s -j2 > /dev/null
   - make install > /dev/null
-  - export PATH=${TRAVIS_BUILD_DIR}/install/bin:${PATH}
+  - export PATH=${TRAVIS_BUILD_DIR}/radare2/install/bin:${PATH}
   - cd ..
   - pip install r2pipe
   - chmod +x test.sh
