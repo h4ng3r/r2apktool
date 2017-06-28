@@ -39,5 +39,6 @@ script:
   - make -s -j2 > /dev/null
   - make install > /dev/null
   - cd ..
+  - pip install r2pipe
   - chmod +x test.sh
   - ./test.sh
