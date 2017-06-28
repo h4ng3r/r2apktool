@@ -26,6 +26,7 @@ addons:
       - jq
       - gcc-4.8
       - g++-4.8
+      - apktool
 
 cache:
   - ccache
@@ -38,3 +39,5 @@ script:
   - ./configure --prefix=`pwd`/install > /dev/null
   - make -s -j2 > /dev/null
   - make install > /dev/null
+  - cd ..
+  - ./test.sh
