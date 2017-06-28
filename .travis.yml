@@ -1,0 +1,46 @@
+os:
+  - linux
+  - osx
+
+language: c
+dist: trusty
+
+compiler:
+  - gcc
+  - clang
+
+matrix:
+  exclude:
+      - os: osx
+        compiler: gcc
+
+sudo: false
+
+env:
+  - CXX=g++-4.8
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - dc
+      - binutils
+      - cabextract
+      - libcurl4-openssl-dev
+      - libelf-dev
+      - libdw-dev
+      - jq
+      - gcc-4.8
+      - g++-4.8
+
+cache:
+  - ccache
+  - apt
+
+
+script:
+  - git clone --depth 1 `doc/repo REGRESSIONS`
+  - ./configure --prefix=`pwd`/install > /dev/null
+  - make -s -j2 > /dev/null
+  - make install > /dev/null
