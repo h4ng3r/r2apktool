@@ -24,7 +24,7 @@
 
     invoke-direct {v0, v1}, LHello.<init>(Ljava/lang/String;)V ; 0x0
 
-    invoke-virtual {v0}, LHello.say()V ; 0x2
+    invoke-virtual {v0}, LHello.say()V ; 0x2 TEST
 
     return-void
 
