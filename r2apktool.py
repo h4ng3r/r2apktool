@@ -5,6 +5,8 @@ import codecs
 import errno
 import sys
 import shutil
+from subprocess import Popen, PIPE
+from datetime import datetime
 
 def mkdir_p(path):
 	try:
@@ -48,9 +50,9 @@ def printMethod(F, r2, method, size = None):
 			F.write ("    %s\n\n" % op['opcode'])
 
 def printMethods(F, r2, methods, sizes, direct = True):
-	# TODO: handle abstracts...
-	# ex: Lcom/ice/tar/TarInputStream$EntryFactory.method.createEntry(Ljava/io/File;)Lcom/ice/tar/TarEntry;
 	for method in methods:
+		if not "flags" in method or len (method['flags']) == 0:
+			method['flags'] = ["private"]
 		if "abstract" in method['flags']:
 			continue
 		elif direct and ("static" in method['flags'] or "private"  in method['flags'] or "constructor" in method['flags']):
@@ -62,12 +64,29 @@ def printMethods(F, r2, methods, sizes, direct = True):
 def decompileSmali(apk_file, out_path):
 	os.makedirs (out_path)
 
-	# TODO: check r2 installed
-	# TODO: check r2 version
-	# TODO: check file extension and handle errors in open
-	r2 = r2pipe.open ("apk://" + apk_file)
+	cmd = ["radare2", "-v"]
+	try:
+		process = Popen(cmd, shell=False, stdin=PIPE, stdout=PIPE)
+		r2_version = process.stdout.read()
+	except:
+		print("ERROR: Cannot find radare2 in PATH")
+		sys.exit()
+
+	r2_build_date = r2_version[-21:-11]
+	r2_build_date = datetime.strptime(r2_build_date, '%Y-%m-%d')
+	delta = r2_build_date - datetime.today()
+	if delta.days < -7:
+		print "WARNING: Your version of radare2 is quite old, please consider upgrade it to the last version from git."
+
+	try:
+		r2 = r2pipe.open ("apk://" + apk_file)
+	except Exception as e:
+		print e
+		sys.exit()
 
 	r2.cmd ("e asm.comments = false")
+	r2.cmd ("e asm.slow = false")
+	r2.cmd ("e asm.demangle = false")
 
 	sizes = parseSymbols (r2.cmdj ("isj"))
 
@@ -95,7 +114,7 @@ def decompileSmali(apk_file, out_path):
 
 	r2.quit ()
 
-def main():	
+def main():
 
 	parser = argparse.ArgumentParser (description='r2apktool.')
 	parser.add_argument ('file', type=str, help='apk file to decompile')
