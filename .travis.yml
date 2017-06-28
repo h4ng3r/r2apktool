@@ -34,6 +34,7 @@ cache:
 
 script:
   - git clone --depth 1 https://github.com/radare/radare2.git
+  - cd radare2
   - ./configure --prefix=`pwd`/install > /dev/null
   - make -s -j2 > /dev/null
   - make install > /dev/null
