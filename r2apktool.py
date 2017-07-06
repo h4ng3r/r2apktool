@@ -10,6 +10,32 @@ import shutil
 from subprocess import Popen, PIPE
 from datetime import datetime
 
+ACC_FLAGS = [
+	'public',
+	'private',
+	'protected',
+	'static',
+	'final',
+	'synchronized',
+	'volatile',
+	'transient',
+	'native',
+	'interface',
+	'abstract',
+	'constructor',
+	'synchronized',
+]
+
+def order_access_flags(acc_flags):
+	y = []
+	for x in acc_flags:
+		y.append((ACC_FLAGS.index(x), x))
+	y.sort(key=lambda x: x[0])
+
+	print " ".join(z[1] for z in y)
+
+	return " ".join(z[1] for z in y)
+
 def mkdir_p(path):
 	try:
 		os.makedirs (path)
@@ -36,11 +62,11 @@ def printFields(F, fields, ftype = "ifield"):
 			name = field['name'][field['name'].index ("field")+6:]
 			if not "flags" in field or len (field['flags']) == 0:
 				field['flags'] = ["private"]
-			flags = "".join (field['flags'])
+			flags = order_access_flags (field['flags'])
 			F.write (".field %s %s \n" % (flags, name))
 
 def printMethod(F, r2, method, size = None):
-	F.write (".method %s %s\n" % (" ".join (method['flags']), method['name'].split (".")[2]))
+	F.write (".method %s %s\n" % (order_access_flags (method['flags']), method['name'].split (".")[2]))
 	if size:
 		pdj = r2.cmdj ("pDj %d @ %d" % (size, method['addr']))
 		for op in pdj:
@@ -72,7 +98,7 @@ def decompileSmali(apk_file, out_path):
 		print e
 		sys.exit()
 
-	r2.cmd ("e asm.comments = false")
+	#r2.cmd ("e asm.comments = false")
 	r2.cmd ("e asm.slow = false")
 	#r2.cmd ("e asm.demangle = false")
 
@@ -122,7 +148,6 @@ def main():
 		else:
 			print "The path already exists. You can overwrite it with -f option."
 			sys.exit ()
-
 
 	cmd = ["radare2", "-v"]
 	try:
