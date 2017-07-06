@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import r2pipe
 import argparse
 import os
