@@ -17,10 +17,10 @@
 
     return-void
 
-.method static public main([Ljava/lang/String;)V
+.method public static main([Ljava/lang/String;)V
     new-instance v0, LHello;
 
-    const-string v1, 0x2cf
+    const-string v1, str.World
 
     invoke-direct {v0, v1}, LHello.<init>(Ljava/lang/String;)V ; 0x0
 
@@ -37,7 +37,7 @@
 
     invoke-direct {v1}, Ljava/lang/StringBuilder.<init>()V ; 0x5
 
-    const-string v2, 0x236
+    const-string v2, str.Hello
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder.append(Ljava/lang/String;)Ljava/lang/StringBuilder; ; 0x6
 

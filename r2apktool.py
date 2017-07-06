@@ -32,8 +32,6 @@ def order_access_flags(acc_flags):
 		y.append((ACC_FLAGS.index(x), x))
 	y.sort(key=lambda x: x[0])
 
-	print " ".join(z[1] for z in y)
-
 	return " ".join(z[1] for z in y)
 
 def mkdir_p(path):
