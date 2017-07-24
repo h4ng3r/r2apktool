@@ -11,19 +11,26 @@ from subprocess import Popen, PIPE
 from datetime import datetime
 
 ACC_FLAGS = [
-	'public',
-	'private',
-	'protected',
-	'static',
-	'final',
-	'synchronized',
-	'volatile',
-	'transient',
-	'native',
-	'interface',
-	'abstract',
-	'constructor',
-	'synchronized',
+	"public",
+	"private",
+	"protected",
+	"static",
+	"final",
+	"synchronized",
+	"native",
+	"volatile",
+	"bridge",
+	"transient",
+	"varargs",
+	"native",
+	"interface",
+	"abstract",
+	"strict",
+	"synthetic",
+	"annotation",
+	"enum",
+	"constructor",
+	"declared_synchronized",
 ]
 
 def order_access_flags(acc_flags):
@@ -91,7 +98,7 @@ def decompileSmali(apk_file, out_path):
 	os.makedirs (out_path)
 
 	try:
-		r2 = r2pipe.open ("apk://" + apk_file)
+		r2 = r2pipe.open ("apk://" + apk_file, ["-z"])
 	except Exception as e:
 		print e
 		sys.exit()
