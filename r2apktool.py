@@ -68,7 +68,7 @@ def printFields(F, fields, ftype = "ifield"):
 			if not "flags" in field or len (field['flags']) == 0:
 				field['flags'] = ["private"]
 			flags = order_access_flags (field['flags'])
-			F.write (".field %s %s \n" % (flags, name))
+			F.write (".field %s %s; \n" % (flags, name))
 
 def printMethod(F, r2, method, size = None):
 	F.write (".method %s %s\n" % (order_access_flags (method['flags']), method['name'].split (".")[2]))
