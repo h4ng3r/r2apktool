@@ -98,7 +98,7 @@ def decompileSmali(apk_file, out_path):
 	os.makedirs (out_path)
 
 	try:
-		r2 = r2pipe.open ("apk://" + apk_file, ["-z"])
+		r2 = r2pipe.open ("apk://" + apk_file, [""]) // removed -z
 	except Exception as e:
 		print e
 		sys.exit()
