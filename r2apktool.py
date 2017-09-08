@@ -147,6 +147,10 @@ def main():
 	filename = os.path.basename (apk_file)
 	out_path = os.path.splitext (filename)[0]
 
+	if not os.path.exists (filename):
+		print "The input file doesn't exist..."
+		sys.exit ()
+	
 	if os.path.exists (out_path):
 		if args.f:
 			shutil.rmtree (out_path)
